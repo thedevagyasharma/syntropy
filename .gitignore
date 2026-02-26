@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.playwright-mcp/
+nul
+js/main.js.bak
+syntropy.html

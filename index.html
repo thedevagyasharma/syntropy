@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYNTROPY</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav>
+    <span class="nav-logo">SYN<span>T</span>ROPY</span>
+    <ul class="nav-links">
+      <li><a href="#system">System</a></li>
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#generate">Generate</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="section" style="border-bottom: 1px solid var(--border);">
+    <div id="intro-sketch" style="margin-bottom: 40px;"></div>
+    <h1 class="hero-title">SYN<span>T</span>ROPY</h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        Two overlapping layers. Thirteen binary decisions.<br>
+        8,192 possible patterns, most unremarkable, some beautiful.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">16</span>
+          <span class="stat-label">States of Consciousness</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">16</span>
+          <span class="stat-label">Cosmological Processes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">32</span>
+          <span class="stat-label">Philosophical Archetypes</span>
+        </div>
+      </div>
+      <a href="#generate" class="hero-cta">Find yours &rarr;</a>
+    </div>
+  </section>
+
+  <!-- SYSTEM -->
+  <section id="system" class="section">
+    <p class="section-label fade-in">01 — The System</p>
+    <div class="system-grid">
+      <div class="system-intro fade-in">
+        <h2>The rules came first.<br>The patterns followed.</h2>
+        <p>
+          Each layer operates on simple binary rules. The squares layer makes 9 decisions: each cell black or white. The rotated squares layer makes 4 decisions: each diamond present or absent.
+        </p>
+        <p>
+          Alone, each layer is unremarkable. When combined, they produce 8,192 distinct patterns, each one different, some of them beautiful.
+        </p>
+      </div>
+
+      <div class="diagrams-wrap fade-in">
+        <div class="diagram-row">
+          <div class="diagram-cell">
+            <span class="diagram-cell-label">Squares</span>
+            <div id="diag-sq"></div>
+            <hr class="diagram-divider">
+            <span class="diagram-stats">9 bits<br>512 patterns</span>
+          </div>
+          <div class="diagram-cell">
+            <span class="diagram-cell-label">Rotated</span>
+            <div id="diag-dm"></div>
+            <hr class="diagram-divider">
+            <span class="diagram-stats">4 bits<br>16 patterns</span>
+          </div>
+          <div class="diagram-cell">
+            <span class="diagram-cell-label">Composed</span>
+            <div id="diag-co"></div>
+            <hr class="diagram-divider">
+            <span class="diagram-stats">13 bits<br>8,192 patterns</span>
+          </div>
+        </div>
+        <div class="name-display">
+          <p class="name-display-label">Current Name</p>
+          <p class="name-display-name" id="diag-name">—</p>
+          <p class="name-display-id" id="diag-id">—</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAMING -->
+    <div class="naming-block fade-in">
+      <h2>The name is in the pattern.</h2>
+      <p>
+        Each pattern has a name, not assigned but encoded.
+        The same 13 bits that produce the visual produce the language.
+        The patterns and their names have always been the same thing.
+      </p>
+      <div class="naming-breakdown">
+        <div class="naming-part">
+          <span class="naming-bits">Bits 0–3</span>
+          <span class="naming-role">Adjective</span>
+          <span class="naming-domain">States of Consciousness</span>
+          <span class="naming-count">16 words</span>
+        </div>
+        <div class="naming-part">
+          <span class="naming-bits">Bits 4–7</span>
+          <span class="naming-role">Verb</span>
+          <span class="naming-domain">Cosmological Processes</span>
+          <span class="naming-count">16 words</span>
+        </div>
+        <div class="naming-part">
+          <span class="naming-bits">Bits 8–12</span>
+          <span class="naming-role">Noun</span>
+          <span class="naming-domain">Philosophy of Mind</span>
+          <span class="naming-count">32 words</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION -->
+  <section id="collection" class="section">
+    <div class="collection-header fade-in">
+      <div>
+        <p class="section-label" style="margin-bottom: 12px;">02 — Collection</p>
+        <h2 style="font-size: clamp(20px, 3vw, 32px); font-weight: normal;">Selected Patterns</h2>
+      </div>
+      <span class="collection-note">9 of 8,192</span>
+    </div>
+    <div class="collection-grid fade-in">
+      <div class="collection-item"><img src="/selected/syntropy-757.jpg" alt="#757" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-4378%20(1).jpg" alt="#4378" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-4846.jpg" alt="#4846" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-2238%20(1).jpg" alt="#2238" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-7696.jpg" alt="#7696" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-3413%20(1).jpg" alt="#3413" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-5332.jpg" alt="#5332" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-1680%20(1).jpg" alt="#1680" loading="lazy"></div>
+      <div class="collection-item"><img src="/selected/syntropy-3439.jpg" alt="#3439" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- GENERATE -->
+  <section id="generate" class="section">
+    <p class="section-label fade-in">03 — Generate</p>
+    <div class="generate-layout fade-in">
+      <div class="canvas-wrap">
+        <div id="main-sketch"></div>
+      </div>
+      <div class="generate-controls">
+        <div class="ctrl-block">
+          <p class="ctrl-label">Current</p>
+          <p class="state-name" id="pub-name">—</p>
+          <p class="state-id" id="pub-id">—</p>
+          <p class="state-binary" id="pub-binary">—</p>
+        </div>
+        <div class="ctrl-block">
+          <p class="ctrl-label">Explore</p>
+          <div class="btn-pair">
+            <button class="btn-outline" id="pub-teleport">Teleport</button>
+            <button class="btn-fill" id="pub-travel">Travel</button>
+          </div>
+          <div class="input-row">
+            <input class="num-input" type="number" id="pub-decimal" min="0" max="8191" placeholder="0 to 8191">
+            <button class="btn-outline" id="pub-jump">Jump</button>
+          </div>
+        </div>
+        <div class="ctrl-block">
+          <p class="ctrl-label">View</p>
+          <label class="toggle-row" for="pub-grid">
+            <span class="toggle-label">Grid</span>
+            <span class="toggle-track">
+              <input type="checkbox" id="pub-grid">
+              <span class="toggle-knob"></span>
+            </span>
+          </label>
+          <label class="toggle-row" for="pub-color">
+            <span class="toggle-label">Orange</span>
+            <span class="toggle-track">
+              <input type="checkbox" id="pub-color">
+              <span class="toggle-knob"></span>
+            </span>
+          </label>
+        </div>
+        <div class="ctrl-block">
+          <button class="btn-outline" id="pub-save">Capture</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-logo">SYNTROPY<br><span>Some patterns are worth finding.</span></p>
+    <p>Created by <a href="https://www.devagyasharma.com" target="_blank" rel="noopener">Dev Sharma</a> . 2026</p>
+  </footer>
+
+  <div id="lightbox">
+    <div class="lightbox-bg"></div>
+    <img id="lightbox-img" src="">
+  </div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
