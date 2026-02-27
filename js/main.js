@@ -9,7 +9,9 @@ const diagState = stateFromN(diagN);
   const modes = ['sq', 'dm', 'co'];
   new p5(function(p) {
     p.setup = function() {
-      p.createCanvas(DS, DS).parent('diag-' + id);
+      const c = p.createCanvas(DS, DS);
+      c.parent('diag-' + id);
+      c.elt.removeAttribute('style'); // let CSS width: 100% apply
       p.noLoop();
       if (id === 'co') {
         document.getElementById('diag-name').textContent = getName(diagN);
@@ -37,7 +39,9 @@ new p5(function(p) {
   mainP = p;
   p.setup = function() {
     p.pixelDensity(2);
-    p.createCanvas(CW, CH).parent('main-sketch');
+    const c = p.createCanvas(CW, CH);
+    c.parent('main-sketch');
+    c.elt.removeAttribute('style'); // let CSS max-width: 100% apply
     updateUI();
   };
   p.draw = function() {
@@ -54,7 +58,38 @@ new p5(function(p) {
 });
 
 let isAnimating = false;
-const notes = ['B', 'Csharp', 'Dsharp', 'E', 'Fsharp', 'Gsharp', 'Asharp', 'Bu'].map(n => new Audio(`/${n}.ogg`));
+
+// Pre-load a pool of 3 elements per note (MP3 for iOS/Safari compat)
+const NOTE_NAMES = ['B', 'Csharp', 'Dsharp', 'E', 'Fsharp', 'Gsharp', 'Asharp', 'Bu'];
+const POOL = 3;
+const notePool = NOTE_NAMES.map(name =>
+  Array.from({ length: POOL }, () => {
+    const a = new Audio(`/${name}.mp3`);
+    a.load();
+    return a;
+  })
+);
+const poolIdx = new Array(NOTE_NAMES.length).fill(0);
+
+function playNote(idx) {
+  const el = notePool[idx][poolIdx[idx]];
+  poolIdx[idx] = (poolIdx[idx] + 1) % POOL;
+  el.currentTime = 0;
+  el.play().catch(() => {});
+}
+
+// Unlock audio on first user gesture (required on iOS)
+let audioUnlocked = false;
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  notePool.flat().forEach(el => {
+    el.muted = true;
+    el.play().then(() => { el.pause(); el.currentTime = 0; el.muted = false; }).catch(() => { el.muted = false; });
+  });
+}
+document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+document.addEventListener('click', unlockAudio, { once: true });
 
 function flipBits(n, count) {
   const positions = [];
@@ -63,11 +98,6 @@ function flipBits(n, count) {
     if (!positions.includes(b)) positions.push(b);
   }
   return positions.reduce((acc, b) => acc ^ (1 << b), n);
-}
-
-function playNote(idx) {
-  const s = notes[idx].cloneNode();
-  s.play();
 }
 
 document.getElementById('pub-teleport').onclick = function() {
@@ -90,6 +120,7 @@ document.getElementById('pub-jump').onclick = function() {
 
 document.getElementById('pub-travel').onclick = function() {
   if (isAnimating) return;
+  unlockAudio();
 
   document.getElementById('pub-decimal').value = '';
 
@@ -141,7 +172,7 @@ document.getElementById('pub-save').onclick = function() {
 
 // --- INTRO SKETCH ---
 const INTRO_TARGET = 5290;
-const INTRO_SIZE = Math.round(window.innerHeight * 0.14);
+const INTRO_SIZE = 180; // render resolution — CSS controls display size
 const IT = INTRO_SIZE / 3;
 
 new p5(function(p) {
@@ -206,7 +237,9 @@ new p5(function(p) {
   }
 
   p.setup = function() {
-    p.createCanvas(INTRO_SIZE, INTRO_SIZE).parent('intro-sketch');
+    const c = p.createCanvas(INTRO_SIZE, INTRO_SIZE);
+    c.parent('intro-sketch');
+    c.elt.removeAttribute('style');
     setState(sequence[0]);
     let step = 0;
     function next() {
