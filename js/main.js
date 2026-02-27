@@ -59,37 +59,54 @@ new p5(function(p) {
 
 let isAnimating = false;
 
-// Pre-load a pool of 3 elements per note (MP3 for iOS/Safari compat)
+// Fetch MP3 data eagerly on page load — no gesture required for fetch
 const NOTE_NAMES = ['B', 'Csharp', 'Dsharp', 'E', 'Fsharp', 'Gsharp', 'Asharp', 'Bu'];
-const POOL = 3;
-const notePool = NOTE_NAMES.map(name =>
-  Array.from({ length: POOL }, () => {
-    const a = new Audio(`/${name}.mp3`);
-    a.load();
-    return a;
-  })
-);
-const poolIdx = new Array(NOTE_NAMES.length).fill(0);
+const rawAudioData = {};
+NOTE_NAMES.forEach(async (name, i) => {
+  try {
+    const resp = await fetch(`/${name}.mp3`);
+    if (!resp.ok) return;
+    const ab = await resp.arrayBuffer();
+    rawAudioData[i] = ab;
+    // If gesture already happened before this fetch finished, decode now
+    if (audioCtx) audioCtx.decodeAudioData(ab.slice(0), buf => { audioBuffers[i] = buf; }, () => {});
+  } catch (e) {}
+});
+
+let audioCtx = null;
+const audioBuffers = {};
+
+// Called synchronously in gesture handler — no await, no async, keeps iOS gesture chain intact
+function ensureAudioContext() {
+  if (audioCtx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  audioCtx = new AC();
+  // iOS requires scheduling actual audio in the gesture handler — silent 1-sample buffer unlocks it
+  const silence = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+  const unlock = audioCtx.createBufferSource();
+  unlock.buffer = silence;
+  unlock.connect(audioCtx.destination);
+  unlock.start(0);
+  audioCtx.resume();
+  // Decode whatever is already fetched (typically all of it if user hasn't tapped immediately)
+  Object.entries(rawAudioData).forEach(([i, ab]) =>
+    audioCtx.decodeAudioData(ab.slice(0), buf => { audioBuffers[Number(i)] = buf; }, () => {})
+  );
+}
 
 function playNote(idx) {
-  const el = notePool[idx][poolIdx[idx]];
-  poolIdx[idx] = (poolIdx[idx] + 1) % POOL;
-  el.currentTime = 0;
-  el.play().catch(() => {});
+  if (!audioCtx || !audioBuffers[idx]) return;
+  try {
+    const src = audioCtx.createBufferSource();
+    src.buffer = audioBuffers[idx];
+    src.connect(audioCtx.destination);
+    src.start(0);
+  } catch (e) {}
 }
 
-// Unlock audio on first user gesture (required on iOS)
-let audioUnlocked = false;
-function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  notePool.flat().forEach(el => {
-    el.muted = true;
-    el.play().then(() => { el.pause(); el.currentTime = 0; el.muted = false; }).catch(() => { el.muted = false; });
-  });
-}
-document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
-document.addEventListener('click', unlockAudio, { once: true });
+document.addEventListener('touchstart', ensureAudioContext, { once: true, passive: true });
+document.addEventListener('click', ensureAudioContext, { once: true });
 
 function flipBits(n, count) {
   const positions = [];
@@ -120,7 +137,7 @@ document.getElementById('pub-jump').onclick = function() {
 
 document.getElementById('pub-travel').onclick = function() {
   if (isAnimating) return;
-  unlockAudio();
+  ensureAudioContext();
 
   document.getElementById('pub-decimal').value = '';
 
