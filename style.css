@@ -456,8 +456,12 @@ nav {
   border: 1px solid var(--border);
   overflow: hidden;
   background: #000;
-  flex: 1;
+  flex: 2;
   min-width: 0;
+}
+
+@media (min-width: 1400px) {
+  .canvas-wrap { flex: 3; }
 }
 
 #main-sketch {
@@ -474,7 +478,8 @@ nav {
 }
 
 .generate-controls {
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--sub-gap);
